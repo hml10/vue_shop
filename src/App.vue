@@ -1,14 +1,25 @@
 <template>
-  <div>App</div>
+  <div>
+    <Header />
+    <Footer />
+  </div>
 </template>
 
 <script>
+// 引入Header组件
+import Header from "./components/Header/index";
+// 引入Footer组件
+import Footer from "./components/Footer";
+
 export default {
   name: "App",
   data() {
     return {};
   },
-  components: {},
+  components: {
+    Header,
+    Footer,
+  },
 };
 </script>
 

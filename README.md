@@ -2,7 +2,7 @@
 
 ## 基于 vue 脚手架三(准备工作) day_01
 
-- 下载 vue create hml_jd、 运行测试 npm run serve、 打包 npm run build、运行 serve dist 确认脚手架没有问题
+- 下载 vue create vue_shop、 运行测试 npm run serve、 打包 npm run build、运行 serve dist 确认脚手架没有问题
 
 - 开始清空脚手架里面没有用的一些目录 随手可以设置一下浏览器是否自动打开 再次运行项目测试打开
 
@@ -17,6 +17,7 @@
 
 - 头部 ---> 普通组件 ---> Header 组件
 - 底部 ---> 普通组件 ---> Footer 组件
+
 - 中间 ---> 路由组件 ---> Home 组件
 - 登录 ---> 路由组件 ---> Login 组件
 - 注册 ---> 路由组件 ---> Register 组件
