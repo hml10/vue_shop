@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>滚轮事件</title>
+    <style>
+      input {
+        width: 400px;
+        padding: 10px;
+        border: 1px solid #ccc;
+      }
+    </style>
+  </head>
+  <body>
+    <input type="text" id="myInput" />
+    <script>
+      /**
+       * 持续触发事件，保证一段时间内只触发一次。
+       * 两次事件的时间间隔只有达到一定时间才能触发---首先执行一次，然后在规定时间内执行。
+       * */
+
+      let myInput = document.getElementById("myInput");
+
+      let lastTime = Date.now();
+      // const time = 1000;
+      myInput.addEventListener("keyup", function () {
+        // console.count();
+        const nowTime = Date.now();
+        if (nowTime - lastTime < 1000) {
+          return false;
+        }
+        console.count();
+        lastTime = nowTime;
+      });
+
+      // //获取元素
+      // var myInput = document.querySelector("#myInput");
+      // //监听事件 事件节流方式，1s之内只能触发一次
+      // var prev = Date.now(); //上一次触发时间
+      // var delay = 1000; //最小时间间隔
+      // myInput.addEventListener("keyup", function () {
+      //   //记录此时的事件
+      //   var now = Date.now();
+      //   //两次事件的时间间隔 >= 1s种才能触发
+      //   if (now - prev < delay) {
+      //     return false;
+      //   }
+      //   //事件的逻辑
+      //   console.count();
+      //   //更新一下时间
+      //   prev = now;
+      // });
+    </script>
+  </body>
+</html>

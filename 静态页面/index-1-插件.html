@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>玉树临风美少年，揽镜自顾夜不眠</title>
+    <script src="https://cdn.bootcss.com/lodash.js/4.17.15/lodash.js"></script>
+  </head>
+
+  <body>
+    <button id="btn1">节流</button>
+    <button id="btn2">防抖</button>
+
+    <script>
+      document.getElementById("btn1").onclick = _.throttle(result, 1000);
+      document.getElementById("btn2").onclick = _.debounce(result, 1000);
+
+      // 自己实现的
+      // document.getElementById("btn1").onclick = throttle(result, 1000);
+      // document.getElementById("btn2").onclick = debounce(result, 1000);
+
+      function result() {
+        console.log("我被点了");
+      }
+
+      // 无论是节流还是防抖，最终都会返回一个回调
+
+      // 节流函数
+      function throttle(fn, time) {
+        let lastTime = 0; // 记录上一次函数调用时间
+        return function (...args) {
+          // const args = arguments;
+          // console.log("节流");
+          const nowTime = Date.now(); // 当前函数调用的时间
+          if (nowTime - lastTime > time) {
+            lastTime = nowTime; // 同步时间
+            fn.apply(this, args); // 修改函数this和参数
+          }
+        };
+      }
+
+      // 防抖函数
+      function debounce(fn, time) {
+        return function () {
+          const args = arguments;
+          // console.log("防抖");
+          // 清理定时器
+          if (fn.timeId) {
+            clearTimeout(fn.timeId);
+          }
+          fn.timeId = setTimeout(() => {
+            // 删除保存的定时器id
+            delete fn.timeId;
+            fn.apply(this, args);
+          }, time);
+        };
+      }
+    </script>
+  </body>
+</html>

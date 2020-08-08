@@ -25,11 +25,11 @@
 
 ## 配置基本路由+拆分组件 day_02-上午
 
-- 搭建 router 里面的路由最终在 App.vue 中引入<Header/> <router-view></router-view> <Footer/>
+- 搭建 router 里面的路由最终在 App.vue 中引入<Header/> <router-view></router-view> <Footer/> 然后在 main.js 中引入并注册路由器 记得测试路由
 
 - 拆分组件---辉鸿目录---->home.html--->header-结构和样式--->进行组件的拆分--->public 新建 css 文件在 index.html 中引入样式重置(需要重启项目)
 
-- 拆分组件---辉鸿目录---->home.html--->footer-结构和样式--->进行组件的拆分
+- 拆分组件---辉鸿目录---->home.html--->footer-结构和样式--->进行组件的拆分(需要重启项目)
 
 - 拆分组件---辉鸿目录---->home.html--->home-所有的结构和样式--->进行组件的拆分--->样式会乱--->样式中搜索-swiper-把所有的轮播图注释只留一张图片
 
@@ -43,7 +43,7 @@
 
 - 编程式路由 query 以对象方式传参和 params 以对象方式传参
 
-- 点击登录或者注册页面让 footer 组件可以隐藏起来--->routes、App 里面设置
+- 点击登录或者注册页面让 footer 组件可以隐藏起来--->routes、App 里面设置、使用了路由 meta
 
 ### 拆分登录和注册组件
 
