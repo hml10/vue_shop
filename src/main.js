@@ -5,6 +5,8 @@ import App from "./App.vue";
 
 // 引入router
 import router from "./router";
+// 引入store
+import store from "./store/index";
 
 // 引入商品分类导航组件
 import TypeNav from "./components/TypeNav";
@@ -18,4 +20,6 @@ new Vue({
   render: (h) => h(App),
   // 注册路由器
   router,
+  // 注册store仓库
+  store,
 }).$mount("#app");

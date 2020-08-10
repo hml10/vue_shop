@@ -7,7 +7,7 @@ import VueRouter from "vue-router";
 // 引入routes
 import routes from "./routes";
 
-// 解决路由跳转的bug 从Header组件内部 点击搜索按钮跳转的bug过来的 编写统一的解决方案
+// 解决路由跳转的bug 从Header组件内部 点击搜索按钮跳转的bug过来的 编写统一的解决方案 重写它原型上的push和replace方法，给它添加一个成功回调
 const originPath = VueRouter.prototype.push;
 // 1、给成功的回调指定一个默认为空的函数参数即可 onComplete = () => {}
 VueRouter.prototype.push = function(location, onComplete = () => {}, onAbort) {

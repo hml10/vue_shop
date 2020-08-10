@@ -30,6 +30,7 @@
     <!--头部第二行 搜索区域-->
     <div class="bottom">
       <h1 class="logoArea">
+        <!-- 点击图片返回主页面操作 -->
         <router-link class="logo" title="京东" to="/">
           <img src="./images/logo.png" alt />
         </router-link>
@@ -57,7 +58,9 @@ export default {
     // 跳转到search组件
     toSearch() {
       // 编程式路由跳转
+      // this.$router.replace(); //没有记录
       // this.$router.push("/search"); // 有记录 此时多次点击按钮，进行编程式路由跳转 控制台中会出现错误信息
+
       // 1、方式一，每次路由跳转都要设置，一个成功的回调或者失败的回调即可(push和replace解决原理相同)
       // this.$router.push("/search", () => {}); // 成功回调
       // this.$router.push("/search", undefined, () => {}); // 失败回调
@@ -66,7 +69,6 @@ export default {
       // this.$router.push("/search", () => {
       //   console.log("哈哈哈"); // 成功回调，内部的代码是可以执行的
       // });
-      // this.$router.replace(); //没有记录
       // 2、方式二，使用统一种方式，解决项目中所有路由的跳转bug-->去router目录中的index.js文件中为路由器重写push或者replace方法
       // this.$router.push("/search");
 
@@ -74,7 +76,8 @@ export default {
       // this.$router.push("/search/123");
       // this.$router.push(`/search/${this.keyword}`); //parmas 字符串方式
       // 或者 对象方式的parmas传递--(也称为 命名的路由：在路由传参时给他起一个名字name，将来编程式路由进行跳转传参的时候，根据对象模式书写对应的name)
-      // this.$router.push({ name: "search", params: { keyword: this.keyword } }); // 不带参数跳转有警告 加个判断
+
+      // this.$router.push({ name: "search", params: { keyword: this.keyword } }); // 对象方式的params传递 不带参数跳转有警告 加个判断
       // 判断是否有关键字
       if (this.keyword) {
         // 有参数的情况下，携带参数并跳转
@@ -86,6 +89,7 @@ export default {
         // 没有参数也需要跳转
         this.$router.push({ name: "search" });
       }
+      this.keyword = ""; // 清空搜索框
 
       // this.$router.push(`/search?keyword=${this.keyword}`); // query 字符串方式
       // 或者 对象方式的query传递

@@ -8,9 +8,9 @@
 
 - 安装相关插件 npm install axios,vue-router,vuex,less less-loader
 
-### 创建当前项目需要的对应目录(暂时有八个)
+### 创建当前项目需要的对应目录(暂时有七个)
 
-- assets-资源目录、api-存放 ajax 及接口目录、components-普通组件、mock-模拟后台数据
+- api-存放 ajax 及接口目录、components-普通组件、mock-模拟后台数据
 - pages-路由组件目录、router-配置路由、store-组件 vuex 目录、utils-缓存的操作
 
 ### 在对应的目录中创建组件并拆分组件(普通组件-components 目录下、路由组件-pages 目录下)
@@ -63,7 +63,7 @@
 
 - 在请求拦截器添加进度条效果 网址：https://github.com/rstacruz/nprogress 基本用法：网址或-axios.js
 
-- 封装接口函数查看---api-index.js
+- 封装接口函数查看---api-index.js + ajax.js---封装完成后在 app 界面加载完成后做个测试操作
 
 - 脚手架三解决跨域问题新建一个 vue.config.js 文件配置、lintOnSave:false 关闭脚手架三 eslint 语法检查
 

@@ -15,8 +15,8 @@
     <div class="content">
       <label>验证码:</label>
       <input type="text" placeholder="请输入验证码" />
-      <!-- <img ref="code" src="http://182.92.128.115/api/user/passport/code" alt="code" /> -->
-      <img ref="code" src="http://47.93.148.192/api/user/passport/code" alt="code" />
+      <img ref="code" src="http://182.92.128.115/api/user/passport/code" alt="code" />
+      <!-- <img ref="code" src="http://47.93.148.192/api/user/passport/code" alt="code" /> -->
     </div>
     <div class="content">
       <label>登录密码:</label>
