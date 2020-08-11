@@ -9,6 +9,9 @@ module.exports = {
         // target: "http://47.93.148.192", // 转发目标地址
         target: "http://182.92.128.115", // 转发目标地址
         changeOrigin: true, //是否进行跨域
+        // pathRewrite: {
+        //   "^/api": "", // 请求的时候 /api就会替换成 ''
+        // },
       },
     },
   },

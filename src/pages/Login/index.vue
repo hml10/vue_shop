@@ -46,7 +46,7 @@
                 <img src="./images/weixin.png" alt />
               </li>
             </ul>
-            <a href="##" class="register">立即注册</a>
+            <a href="/register" class="register">立即注册</a>
           </div>
         </div>
       </div>
