@@ -29,11 +29,10 @@ export default {
   async mounted() {
     // const result = await reqBaseCategoryList();
     // console.log(result);
-
     // 通过提交actions，使用vuex的方式来发送请求
-    this.$store.dispatch("getBaseCategoryList"); //异步操作
+    // this.$store.dispatch("getBaseCategoryList"); //异步操作
     // console.log(this.$store);
-    console.log(this.$store.state.home.baseCategoryList);
+    // console.log(this.$store.state.home.baseCategoryList);
   },
 };
 </script>

@@ -13,14 +13,14 @@ const state = {
 };
 
 const mutations = {
-  // 直接修改三级分类数据信息的方法
+  // 接收，直接修改三级分类数据信息的方法
   RECEIVE_BASE_CATEGORY_LIST(state, baseCategoryList) {
-    state.baseCategoryList = baseCategoryList;
+    state.baseCategoryList = baseCategoryList.slice(0, -2); //减去遍历出多余的两条数据
   },
 };
 
 const actions = {
-  // 发送获取三级分类信息数据
+  // 异步获取三级分类信息数据
   async getBaseCategoryList({ commit }) {
     // 调用接口发送异步请求
     const result = await reqBaseCategoryList();
