@@ -4,6 +4,7 @@
     <div class="sortList clearfix">
       <div class="center">
         <!--banner轮播-->
+        <Carousel :carouselList="banners" />
       </div>
       <div class="right">
         <div class="news">
@@ -89,12 +90,69 @@
 </template>
 
 <script>
+// 引入swiper
+// import Swiper from "swiper";
+// 引入swiper样式
+// import "swiper/css/swiper.css";
+
+// 引入vuex的辅助函数
+import { mapState } from "vuex";
+
 export default {
   name: "ListContainer",
-  data() {
-    return {};
+  // 页面加载后
+  mounted() {
+    // 创建swiper对象，参数一是一个选择器，参数二是一个配置对象
+    // 下面这种写法会影响其他组件轮播图，原因是组件加载后创建swiper对象，其他组件也使用这个选择器.swiper-container
+    // var mySwiper = new Swiper(".swiper-container", {
+    // var mySwiper = new Swiper("#sw1", {
+    // 遇到问题：页面中轮播图无法正常使用，原因：组件在创建swiper对象时，从vuex中遍历到的数据在组件加载时，发送异步请求。
+    // 此时数据还没有响应回来，但是页面已经显示了，swiper对象先创建好。
+    // 解决方案一:在swiper对象外层套个定时器(settimeOut)，让它创建稍微慢一点，数据先加载。定时器缺陷：网速慢会体现出来。
+    // setTimeout(() => {
+    //   var mySwiper = new Swiper(this.$refs.sw, {
+    //     loop: true, // 循环模式选项
+    //     // 如果需要分页器
+    //     pagination: {
+    //       el: ".swiper-pagination",
+    //     },
+    //     // 如果需要前进后退按钮
+    //     navigation: {
+    //       nextEl: ".swiper-button-next",
+    //       prevEl: ".swiper-button-prev",
+    //     },
+    //   });
+    // }, 1000);
   },
-  components: {},
+  // 计算属性
+  computed: {
+    ...mapState({
+      banners: (state) => state.home.banners,
+    }),
+  },
+  // 监视
+  watch: {
+    // banners() {
+    //   this.$nextTick(() => {
+    //     // 将回调延迟到下次 DOM 更新循环之后执行。在修改数据之后立即使用它，然后等待 DOM 更新。---vue api 中 vm.$nextTick
+    //     var mySwiper = new Swiper(this.$refs.sw, {
+    //       loop: true, // 循环模式选项
+    //       // 如果需要分页器
+    //       pagination: {
+    //         el: ".swiper-pagination",
+    //       },
+    //       // 如果需要前进后退按钮
+    //       navigation: {
+    //         nextEl: ".swiper-button-next",
+    //         prevEl: ".swiper-button-prev",
+    //       },
+    //       autoplay: {
+    //         delay: 1000, //1秒切换一次
+    //       },
+    //     });
+    //   });
+    // },
+  },
 };
 </script>
 
