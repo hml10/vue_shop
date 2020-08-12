@@ -27,6 +27,7 @@ export default {
   },
   // 页面加载后
   async mounted() {
+    this.$store.dispatch("getBaseCategoryList"); //解决了TypeNav中点击，发送多次请求问题
     // const result = await reqBaseCategoryList();
     // console.log(result);
     // 通过提交actions，使用vuex的方式来发送请求

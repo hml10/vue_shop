@@ -12,6 +12,8 @@
     <Like />
     <!--楼层-->
     <Floor />
+    <!--楼层-->
+    <Floor />
     <!--商标-->
     <Brand />
   </div>
@@ -25,6 +27,13 @@ export default {
   name: "Home",
   // 注册组件
   components,
+  // 页面加载
+  mounted() {
+    // 获取大轮播图数据
+    this.$store.dispatch("getBanners");
+    // 获取楼层数据
+    this.$store.dispatch("getFloors");
+  },
 };
 </script>
 

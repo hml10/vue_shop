@@ -10,6 +10,8 @@ import store from "./store/index";
 
 // 引入商品分类导航组件
 import TypeNav from "./components/TypeNav";
+// 引入mock
+import "./mock/mockServer";
 
 Vue.config.productionTip = false;
 

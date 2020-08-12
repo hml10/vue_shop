@@ -102,7 +102,7 @@ export default {
   mounted() {
     // 提交对应的action 目的：获取三级分类数据
     // console.log(this.$store.state.home.baseCategoryList);
-    this.$store.dispatch("getBaseCategoryList");
+    // this.$store.dispatch("getBaseCategoryList"); // 存在问题：每进入一次页面都会发送一次请求，没有必要，放到App中去
 
     // 判断当前路径是不是 / 决定显示不显示
     if (this.$route.path !== "/") {
