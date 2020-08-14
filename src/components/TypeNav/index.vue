@@ -171,8 +171,22 @@ export default {
         query["category" + id + "Id"] =
           category1id || category2id || category3id;
 
-        // 编程式路由跳转，同时传递参数
-        this.$router.push({ path: "Search", query });
+        // 问题:TypeNav组件内部跳转的时候,从来没有考虑过,query传参的时候path问题
+        // 原因:路径/search,没有考虑过 /search/xxx这种情况
+        // 先获取当前的路由地址和params参数
+        const { path, params } = this.$route;
+        // 地址的可能性:   /search   /search/xxx
+        if (path.indexOf("/search") === 0) {
+          // 属于在search页面进行跳转 需要携带query参数和params参数
+          // 如果已经在搜索页面,那就直接重新跳转,指定path为原本路径(可能存在params参数)
+          this.$router.replace({ path, query, params }); // 说明此时的replace后退和push后退一样(原因在router.js中)
+        } else {
+          // 属于不在search页面进行跳转
+          this.$router.push({ path: "/search", query });
+        }
+        // 重置当前的索引，点击菜单后就消失
+        this.currentIndex = -2;
+        this.isShowFirst = false;
       }
     },
 

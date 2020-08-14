@@ -78,16 +78,38 @@ export default {
       // 或者 对象方式的parmas传递--(也称为 命名的路由：在路由传参时给他起一个名字name，将来编程式路由进行跳转传参的时候，根据对象模式书写对应的name)
 
       // this.$router.push({ name: "search", params: { keyword: this.keyword } }); // 对象方式的params传递 不带参数跳转有警告 加个判断
+
+      // 获取当前路由地址和query参数
+      const { path, query } = this.$route;
+
       // 判断是否有关键字
       if (this.keyword) {
-        // 有参数的情况下，携带参数并跳转
-        this.$router.push({
-          name: "search",
-          params: { keyword: this.keyword },
-        });
+        // 再次判断，当前的路径是不是在search中，路径/search,没有考虑过 /search?xxx这种情况
+        // 此时页面可以说明，当前是在search页面中点击搜索按钮进行跳转的
+        if (path.indexOf("/search") === 0) {
+          // 需要携带query参数和params参数
+          this.$router.push({
+            name: "search",
+            params: { keyword: this.keyword },
+            query,
+          });
+        } else {
+          // 说明当前跳转的时候不在search页面中,只需要携带自己的params参数即可
+          // 有参数的情况下，携带参数并跳转
+          this.$router.push({
+            name: "search",
+            params: { keyword: this.keyword },
+          });
+        }
       } else {
-        // 没有参数也需要跳转
-        this.$router.push({ name: "search" });
+        // 再次判断
+        if (path.indexOf("/search") === 0) {
+          // 没有参数也需要跳转，并且携带query参数
+          this.$router.push({ name: "search", query });
+        } else {
+          // 没有参数也需要跳转
+          this.$router.push({ name: "search" });
+        }
       }
       this.keyword = ""; // 清空搜索框
 
