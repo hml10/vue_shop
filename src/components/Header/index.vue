@@ -124,6 +124,12 @@ export default {
       // this.$router.push({ path: "/search", query: { keyword: this.keyword } });
     },
   },
+  // 页面加载后回调，多余操作，练习事件总线---通过点击search组件中 x 来清除搜索中的关键字
+  mounted() {
+    this.$bus.$on("removeKeyword", () => {
+      this.keyword = "";
+    });
+  },
 };
 // 路由器一旦注册后，每个组件中都会出现两个对象
 // $router路由器对象，可以调用相关方法，实现编程式路由跳转

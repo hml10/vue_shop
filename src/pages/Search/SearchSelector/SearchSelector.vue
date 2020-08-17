@@ -4,7 +4,12 @@
       <div class="fl key brand">品牌</div>
       <div class="value logos">
         <ul class="logo-list">
-          <li v-for="trademar in trademarkList" :key="trademar.tmId">{{trademar.tmName}}</li>
+          <!-- 点击品牌的时候需要传递品牌的名字和id -->
+          <li
+            v-for="trademar in trademarkList"
+            :key="trademar.tmId"
+            @click="setTrademark(trademar.tmId,trademar.tmName)"
+          >{{trademar.tmName}}</li>
         </ul>
       </div>
       <div class="ext">
@@ -16,7 +21,11 @@
       <div class="fl key">{{attrs.attrName}}</div>
       <div class="fl value">
         <ul class="type-list">
-          <li v-for="(val,index) in attrs.attrValueList" :key="index">
+          <li
+            v-for="(val,index) in attrs.attrValueList"
+            :key="index"
+            @click="addProps(attrs.attrId,val,attrs.attrName)"
+          >
             <a href="javascript:">{{val}}</a>
           </li>
         </ul>
@@ -31,6 +40,10 @@
 import { mapGetters } from "vuex";
 
 export default {
+  props: {
+    setTrademark: Function,
+    addProps: Function,
+  },
   name: "SearchSelector",
   // 计算属性
   computed: {
@@ -80,6 +93,7 @@ export default {
 
       .logo-list {
         li {
+          cursor: pointer;
           float: left;
           border: 1px solid #e4e4e4;
           margin: -1px -1px 0 0;

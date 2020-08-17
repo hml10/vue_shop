@@ -7,50 +7,62 @@
         <div class="bread">
           <ul class="fl sui-breadcrumb">
             <li>
-              <a href="#">全部结果</a>
+              <a href="/search">全部结果</a>
             </li>
           </ul>
           <ul class="fl sui-tag">
             <!-- 分类信息的名字显示 -->
             <li class="with-x" v-if="options.categoryName">
               {{options.categoryName}}
-              <i>×</i>
+              <i @click="removeCategory">×</i>
             </li>
 
             <!-- 关键字的内容的显示 -->
             <li class="with-x" v-if="options.keyword">
               {{options.keyword}}
-              <i>×</i>
+              <i @click="removeKeyword">×</i>
+            </li>
+
+            <!--品牌信息的显示-->
+            <li class="with-x" v-if="options.trademark">
+              {{options.trademark}}
+              <i @click="removeTrademark">×</i>
+            </li>
+
+            <!--搜索属性条件的显示-->
+            <li class="with-x" v-for="(prop,index) in options.props" :key="prop">
+              {{prop}}
+              <i @click="removeProp(index)">×</i>
             </li>
           </ul>
         </div>
 
         <!--selector-->
-        <SearchSelector />
+        <SearchSelector :setTrademark="setTrademark" :addProps="addProps" />
 
         <!--details-->
         <div class="details clearfix">
           <div class="sui-navbar">
             <div class="navbar-inner filter">
               <ul class="sui-nav">
-                <li class="active">
-                  <a href="#">综合</a>
+                <li :class="{active:isActive('1') }">
+                  <a href="javascript:">综合</a>
                 </li>
                 <li>
-                  <a href="#">销量</a>
+                  <a href="javascript:">销量</a>
                 </li>
                 <li>
-                  <a href="#">新品</a>
+                  <a href="javascript:">新品</a>
                 </li>
                 <li>
-                  <a href="#">评价</a>
+                  <a href="javascript:">评价</a>
                 </li>
-                <li>
-                  <a href="#">价格⬆</a>
+                <li :class="{active:isActive('2') }">
+                  <a href="javascript:">价格⬆</a>
                 </li>
-                <li>
+                <!-- <li>
                   <a href="#">价格⬇</a>
-                </li>
+                </li>-->
               </ul>
             </div>
           </div>
@@ -141,7 +153,7 @@ export default {
         category2Id: "", // 二级分类的id
         category3Id: "", // 三级分类的id
         categoryName: "", // 分类的名字
-        // trademark: "", // 品牌      值:  "品牌id:品牌名字"--->"4:小米"
+        trademark: "", // 品牌      值:  "品牌id:品牌名字"--->"4:小米"
         order: "1:desc", // 排序方式  值: "1:asc" 1--综合,2--价格, asc--升序 desc--降序
         pageNo: 1, // 当前第几页   数字值
         pageSize: 5, // 每页多少条数据  数字值
@@ -209,6 +221,66 @@ export default {
   methods: {
     getProductList() {
       this.$store.dispatch("getProductList", this.options); //发送请求携带options参数对象(封装)
+    },
+    // 移出分类名字信息：一级分类id、二级分类id、三级分类id、分类信息名字---重置后还需要重新发送请求
+    removeCategory() {
+      this.options.category1Id = "";
+      this.options.category2Id = "";
+      this.options.category3Id = "";
+      this.options.categoryName = "";
+      // 重新发送请求
+      // this.getProductList(); // 此时有bug,地址栏上的参数是没有清理的
+      // 重新跳转当前界面,用于删除query参数,path可能包含keyword
+      this.$router.replace(this.$route.path); // 看不懂这个操作可以直接去网址栏上，把后面携带的参数删除试试
+      // console.log(this.$route.path);
+    },
+    // 移出关键字信息
+    removeKeyword() {
+      // keyword要进行重置
+      this.options.keyword = "";
+      this.$bus.$emit("removeKeyword"); //事件总线
+      // 重新发送请求
+      // this.getProductList(); // 此时有bug,地址栏上的参数是没有清理的
+      // 重新跳转当前页面,用于删除params参数
+      this.$router.replace({ path: "/search", query: this.$route.query }); // 看不懂这个操作可以直接去网址栏上，把后面携带的参数删除试试
+    },
+    // 点击品牌时，在全部结果中显示
+    setTrademark(trademarkId, trademarkName) {
+      // 最终在品牌请求的参数中，添加品牌参数，重新发送请求
+      // 设置品牌id和名字，添加到对应的请求参数中
+      this.options.trademark = trademarkId + ":" + trademarkName;
+      // 重新获取商品列表数据，发送请求
+      this.getProductList();
+    },
+    // 移出品牌信息操作
+    removeTrademark() {
+      this.options.trademark = "";
+      this.getProductList();
+    },
+    // 用来点击属性条件，增加搜索条件，发送请求获取数据
+    addProps(propId, propVal, propName) {
+      // 修改接口的参数数据
+      // console.log(propId, propVal, propName);
+      const prop = `${propId}:${propVal}:${propName}`;
+
+      // 判断当前属性是否在这个数组中，如果不在数组中，则添加该属性
+      if (this.options.props.indexOf(prop) === -1) {
+        // 修改接口的参数数据
+        this.options.props.push(prop);
+        // 发送请求
+        this.getProductList();
+      }
+    },
+    // 移出某个属性条件
+    removeProp(index) {
+      // 移出某个指引索引位置搜索属性条件
+      this.options.props.splice(index, 1);
+      // 重新发送请求获取商品数据
+      this.getProductList();
+    },
+    // 排序操作-影响对应的条件被选中(综合，价格)
+    isActive(flag) {
+      return this.options.order.indexOf(flag) === 0;
     },
   },
 };
