@@ -14,6 +14,15 @@ const mutations = {
 const actions = {
   // 获取商品搜索数据，携带参数对象
   async getProductList({ commit }, searchParams) {
+    // 如果不想改变组件中的options --- 优化data里面的数据
+    searchParams = { ...searchParams };
+    // 过滤掉searchParams里面空串的参数
+    Object.keys(searchParams).forEach((key) => {
+      if (searchParams[key] === "") {
+        delete searchParams[key];
+      }
+    });
+
     // console.log("执行下");
     // 调用接口发送异步请求，获取搜索到的商品列表对象
     const result = await reqProductList(searchParams);

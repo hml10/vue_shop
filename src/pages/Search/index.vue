@@ -45,8 +45,8 @@
           <div class="sui-navbar">
             <div class="navbar-inner filter">
               <ul class="sui-nav">
-                <li :class="{active:isActive('1') }">
-                  <a href="javascript:">综合</a>
+                <li :class="{active:isActive('1')}" @click="setOrder('1')">
+                  <a href="javascript:">综合{{getOrderIcon('1')}}</a>
                 </li>
                 <li>
                   <a href="javascript:">销量</a>
@@ -57,11 +57,11 @@
                 <li>
                   <a href="javascript:">评价</a>
                 </li>
-                <li :class="{active:isActive('2') }">
-                  <a href="javascript:">价格⬆</a>
+                <li :class="{active:isActive('2')}" @click="setOrder('2')">
+                  <a href="javascript:">价格{{getOrderIcon('2')}}</a>
                 </li>
                 <!-- <li>
-                  <a href="#">价格⬇</a>
+                  <a href="javascript:">价格⬇</a>
                 </li>-->
               </ul>
             </div>
@@ -98,6 +98,13 @@
               </li>
             </ul>
           </div>
+
+          <!-- 分页组件 -->
+          <Pagination
+            :pageConfig="{total:productList.total,showPageNo:3,pageNo:options.pageNo,pageSize:options.pageSize}"
+            @changeCurrentPage="changeCurrentPage"
+          />
+          <!-- 分页部分
           <div class="fr page">
             <div class="sui-pagination clearfix">
               <ul>
@@ -130,7 +137,7 @@
                 <span>共10页&nbsp;</span>
               </div>
             </div>
-          </div>
+          </div>-->
         </div>
       </div>
     </div>
@@ -153,7 +160,7 @@ export default {
         category2Id: "", // 二级分类的id
         category3Id: "", // 三级分类的id
         categoryName: "", // 分类的名字
-        trademark: "", // 品牌      值:  "品牌id:品牌名字"--->"4:小米"
+        // trademark: "", // 品牌      值:  "品牌id:品牌名字"--->"4:小米"
         order: "1:desc", // 排序方式  值: "1:asc" 1--综合,2--价格, asc--升序 desc--降序
         pageNo: 1, // 当前第几页   数字值
         pageSize: 5, // 每页多少条数据  数字值
@@ -215,6 +222,12 @@ export default {
   // 计算属性
   computed: {
     ...mapGetters(["goodsList"]), // 获取商品信息
+    ...mapState({
+      productList: (state) => state.search.ProductList,
+    }),
+    // productList() {
+    //   console.log(this.$store.state.search.ProductList.total);
+    // },
   },
 
   // 方法
@@ -248,13 +261,27 @@ export default {
     setTrademark(trademarkId, trademarkName) {
       // 最终在品牌请求的参数中，添加品牌参数，重新发送请求
       // 设置品牌id和名字，添加到对应的请求参数中
-      this.options.trademark = trademarkId + ":" + trademarkName;
+      // this.options.trademark = trademarkId + ":" + trademarkName;
       // 重新获取商品列表数据，发送请求
+      // this.getProductList();
+
+      // 原因：响应式对象直接添加的属性，内部是没有监视和劫持的--->没有数据绑定
+      // 解决：通过Vue.set()方法或者vm.$set()方法---向响应式对象中添加一个属性，并确保这个新属性同样是响应式的，且触发视图更新
+      // 此时this.options响应式对象，添加了一个响应式trademark属性
+      this.$set(this.options, "trademark", trademarkId + ":" + trademarkName); //优化代码
+      // 重新获取商品列表数据发送请求
       this.getProductList();
     },
     // 移出品牌信息操作
     removeTrademark() {
-      this.options.trademark = "";
+      // 请求的接口中的参数干掉，制空方式
+      // this.options.trademark = "";
+      // 删除响应式数据是不会触发页面不会更新
+      // delete this.options.trademark;
+      // 推荐方法--删除响应式数据，页面会更新---vue文档
+      this.$delete(this.options, "trademark");
+
+      // 重新获取商品列表数据，发送请求
       this.getProductList();
     },
     // 用来点击属性条件，增加搜索条件，发送请求获取数据
@@ -281,6 +308,47 @@ export default {
     // 排序操作-影响对应的条件被选中(综合，价格)
     isActive(flag) {
       return this.options.order.indexOf(flag) === 0;
+    },
+    // 根据不同标识进行排序操作
+    setOrder(flag) {
+      // 1、综合 2、价格 asc---升序 desc---降序
+      // order:'1:desc'
+      // 干掉属性值的空格,获取排序的标识和排序方式
+      // const orders = this.options.order.split(":");
+      // const orderFlag = orders[0]; //排序标识    1 2
+      // const orderType = orders[1]; //排序的类型  asc desc
+      let [orderFlag, orderType] = this.options.order.split(":");
+
+      // 判断传入的标识和当前参数中截取出来的标识是否一致---点击的是同一项
+      if (orderFlag === flag) {
+        // 此时点击的肯定是同一个排序内容，所以切换排序类型，升序或者降序
+        orderType = orderType === "desc" ? "asc" : "desc";
+      } else {
+        // 此时默认选中的是综合---点击的一定是价格
+        orderFlag = flag;
+        orderType = "desc";
+      }
+      // 重新跟新请求里面对应的参数
+      this.options.order = `${orderFlag}:${orderType}`;
+      // 发送请求
+      this.getProductList();
+    },
+    // 排序上下箭头设置
+    getOrderIcon(flag) {
+      // 获取当前的参数中的标识及类型
+      let [orderFlag, orderType] = this.options.order.split(":");
+      if (orderFlag === flag) {
+        return orderType === "desc" ? "⬇" : "⬆";
+      } else {
+        return "";
+      }
+    },
+    // 绑定事件，改变当前页数，发送请求，获取该页数的数据
+    changeCurrentPage(page) {
+      // page是第几页，那么就发送请求获取第几页数据
+      // 改变发送请求的时候传入的参数数据
+      this.options.pageNo = page;
+      this.getProductList(); //发送请求
     },
   },
 };

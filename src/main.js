@@ -12,6 +12,8 @@ import store from "./store/index";
 import TypeNav from "./components/TypeNav";
 // 引入Carousel组件
 import Carousel from "./components/Carousel";
+// 引入分页组件
+import Pagination from "./components/Pagination";
 
 // 引入mock
 import "./mock/mockServer";
@@ -23,6 +25,7 @@ Vue.config.productionTip = false; // 关闭浏览器控制台提示信息
 // 注册成全局组件--商品分类导航--前面是字符串，注册成全局组件的名字
 Vue.component("TypeNav", TypeNav);
 Vue.component("Carousel", Carousel); // 轮播图全局组件
+Vue.component("Pagination", Pagination); // 全局分页组件
 // 事件总线
 // Vue.prototype.$bus = new Vue();// 事件总线---创建vue实列之前---数据初始化之前
 
