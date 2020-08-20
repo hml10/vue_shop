@@ -36,4 +36,9 @@ Vue.use(VueRouter);
 export default new VueRouter({
   mode: "history", //路由地址两种模式---hash带#---history不带#
   routes, //路由组件注册数组
+
+  scrollBehavior(to, from, savedPosition) {
+    // return 期望滚动到哪个的位置
+    return { x: 0, y: 0 };
+  },
 });

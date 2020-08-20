@@ -1,5 +1,5 @@
 <template>
-  <!--分页组件-->
+  <!--分页组件 只有大于零才显示出来-->
   <div class="pagination" v-if="pageConfig.total>0">
     <!--上一页-->
     <button :disabled="currentPage===1" @click="changeCurrentPage(currentPage-1)">上一页</button>
@@ -190,7 +190,7 @@ export default {
 
   watch: {
     /*
-      当接收的pageConfig中的pageNo发生改变调用 
+      当接收的pageConfig中的pageNo发生改变调用
        */
     "pageConfig.pageNo"(value) {
       // 将当前页码指定为外部传入的值

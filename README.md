@@ -161,10 +161,10 @@
 
 ## Pagination 商品详情组件 day_07-下午
 
-- 设计 Pagination 分页组件静态页面
+- 设计分页、全局组件 Pagination 静态页面
 
 - Pagination 组件连续页码算法---Pagination 组件实现及解决一些小 bug
 
 - Detail 商品详情组件、引入静态页面、注册路由、实现页面点击跳转、默认滚动位置到详情顶部
 
-- 测试商品详情接口、并且封装为 vuex
+- 测试商品详情接口、书写 api、并且封装为 vuex 测试数据

@@ -4,6 +4,8 @@ import Home from "@/pages/Home";
 import Login from "@/pages/Login";
 import Register from "../pages/Register";
 import Search from "../pages/Search";
+// 引入detail组件
+import Detail from "@/pages/Detail";
 
 export default [
   // 首页路由组件
@@ -11,6 +13,7 @@ export default [
     path: "/",
     component: Home,
   },
+
   // 登录路由组件
   {
     path: "/login",
@@ -20,6 +23,7 @@ export default [
       isHideFooter: true,
     },
   },
+
   // 注册路由组件
   {
     path: "/register",
@@ -29,6 +33,7 @@ export default [
       isHideFooter: true,
     },
   },
+
   // 搜索路由组件
   {
     //路由传参
@@ -36,12 +41,20 @@ export default [
     path: "/search/:keyword?", //params 方式--->后面加的问号代表params参数可传可不传(解决没参数不能跳转)
     component: Search,
   },
+
   // {
   //   //路由传参
   //   path: "/search", //query 方式
   //   component: Search,
   // },
   // 重定向
+
+  {
+    name: "detail", //命名路由、商品详情
+    path: "/detail/:skuId",
+    component: Detail,
+  },
+
   {
     path: "/",
     redirect: "/",

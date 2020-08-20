@@ -27,3 +27,6 @@ export const reqFloors = () => mockAjax.get("/floors");
 // 搜索商品接口 需要携带搜索参数对象  console.log(reqProductList({}), "api里面的"); // 测试
 export const reqProductList = (searchParams) =>
   ajax.post("/list", searchParams);
+
+// 获取商品详情的接口
+export const reqDetailInfo = (skuId) => ajax.get(`/item/${skuId}`);

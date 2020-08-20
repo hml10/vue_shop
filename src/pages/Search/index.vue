@@ -71,10 +71,17 @@
               <li class="yui3-u-1-5" v-for="goods in goodsList" :key="goods.id">
                 <div class="list-wrap">
                   <div class="p-img">
-                    <a href="javascript:">
+                    <!-- <a href="/detail/skuId">
                       <img :src="goods.defaultImg" />
-                    </a>
+                    </a>-->
+
+                    <!-- 路由跳转detail -->
+                    <!-- <router-link :to="{name:'detail',params:{skuId:goods.id}}"> 对象写法 -->
+                    <router-link :to="`/detail/${goods.id}`">
+                      <img :src="goods.defaultImg" />
+                    </router-link>
                   </div>
+
                   <div class="price">
                     <strong>
                       <em>¥ &#32;</em>
@@ -82,7 +89,8 @@
                     </strong>
                   </div>
                   <div class="attr">
-                    <a href="javascript:" :title="goods.title">{{goods.title}}</a>
+                    <!-- <a href="javascript:" :title="goods.title">{{goods.title}}</a> -->
+                    <router-link :to="`/detail/${goods.id}`" :title="goods.title">{{goods.title}}</router-link>
                   </div>
                   <div class="commit">
                     <i class="command">
@@ -102,7 +110,7 @@
           <!-- 分页组件 -->
           <Pagination
             :pageConfig="{total:productList.total,showPageNo:3,pageNo:options.pageNo,pageSize:options.pageSize}"
-            @changeCurrentPage="changeCurrentPage"
+            @changeCurrentPage="getProductList"
           />
           <!-- 分页部分
           <div class="fr page">
@@ -232,7 +240,10 @@ export default {
 
   // 方法
   methods: {
-    getProductList() {
+    // 根据参数发送请求,获取数据
+    getProductList(pageNo = 1) {
+      // 发送请求的时候需要携带页码数
+      this.options.pageNo = pageNo;
       this.$store.dispatch("getProductList", this.options); //发送请求携带options参数对象(封装)
     },
     // 移出分类名字信息：一级分类id、二级分类id、三级分类id、分类信息名字---重置后还需要重新发送请求
@@ -344,12 +355,12 @@ export default {
       }
     },
     // 绑定事件，改变当前页数，发送请求，获取该页数的数据
-    changeCurrentPage(page) {
-      // page是第几页，那么就发送请求获取第几页数据
-      // 改变发送请求的时候传入的参数数据
-      this.options.pageNo = page;
-      this.getProductList(); //发送请求
-    },
+    // changeCurrentPage(page) {
+    //   // page是第几页，那么就发送请求获取第几页数据
+    //   // 改变发送请求的时候传入的参数数据
+    //   // this.options.pageNo = page;
+    //   this.getProductList(); //发送请求
+    // },
   },
 };
 </script>
