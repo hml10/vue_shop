@@ -29,13 +29,25 @@ const actions = {
 
 const getters = {
   // 返回三级分类名称数据对象
-  categoryView(state) {},
+  categoryView(state) {
+    const categoryView = state.detailInfo.categoryView;
+    return categoryView ? categoryView : {};
+  },
   // 返回商品sku相关对象信息对象
-  skuInfo(state) {},
+  skuInfo(state) {
+    const skuInfo = state.detailInfo.skuInfo;
+    return skuInfo ? skuInfo : {};
+  },
   // 返回商品的轮播图的图片信息数组
-  skuImageList(state) {},
+  skuImageList(state) {
+    const skuInfo = state.detailInfo.skuInfo;
+    return skuInfo ? skuInfo.skuImageList : [];
+  },
   // 返回商品SPU销售属性的列表数组
-  spuSaleAttrList(state) {},
+  spuSaleAttrList(state) {
+    const spuSaleAttrList = state.detailInfo.spuSaleAttrList;
+    return spuSaleAttrList ? spuSaleAttrList : [];
+  },
 };
 
 export default {

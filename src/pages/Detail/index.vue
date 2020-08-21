@@ -7,36 +7,39 @@
     <section class="con">
       <!-- 导航路径区域 -->
       <div class="conPoin">
-        <span>手机、数码、通讯</span>
-        <span>手机</span>
-        <span>Apple苹果</span>
-        <span>iphone 6S系类</span>
+        <span>{{categoryView.category1Name}}</span>
+        <span>{{categoryView.category2Name}}</span>
+        <span>{{categoryView.category3Name}}</span>
       </div>
       <!-- 主要内容区域 -->
       <div class="mainCon">
         <!-- 左侧放大镜区域 -->
         <div class="previewWrap">
           <!--放大镜效果-->
-          <Zoom />
+          <Zoom
+            v-if="skuImageList.length>0"
+            :imgUrl="skuImageList[currentImgeIndex].imgUrl"
+            :bigImgUrl="skuImageList[currentImgeIndex].imgUrl"
+          />
           <!-- 小图列表 -->
-          <ImageList />
+          <ImageList @changCurrentIndex="changCurrentIndex" />
         </div>
         <!-- 右侧选择区域布局 -->
         <div class="InfoWrap">
           <div class="goodsDetail">
-            <h3 class="InfoName">Apple iPhone 6s（A1700）64G玫瑰金色 移动通信电信4G手机</h3>
-            <p class="news">推荐选择下方[移动优惠购],手机套餐齐搞定,不用换号,每月还有花费返</p>
+            <h3 class="InfoName">{{skuInfo.skuName}}</h3>
+            <p class="news">{{skuInfo.skuDesc}}</p>
             <div class="priceArea">
               <div class="priceArea1">
                 <div class="title">价&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;格</div>
                 <div class="price">
                   <i>¥</i>
-                  <em>5299</em>
-                  <span>降价通知</span>
+                  <em>{{skuInfo.price}}</em>
+                  <span>&#32;降价通知</span>
                 </div>
                 <div class="remark">
                   <i>累计评价</i>
-                  <em>65545</em>
+                  <em>999+</em>
                 </div>
               </div>
               <div class="priceArea2">
@@ -66,29 +69,15 @@
           <div class="choose">
             <div class="chooseArea">
               <div class="choosed"></div>
-              <dl>
-                <dt class="title">选择颜色</dt>
-                <dd changepirce="0" class="active">金色</dd>
-                <dd changepirce="40">银色</dd>
-                <dd changepirce="90">黑色</dd>
-              </dl>
-              <dl>
-                <dt class="title">内存容量</dt>
-                <dd changepirce="0" class="active">16G</dd>
-                <dd changepirce="300">64G</dd>
-                <dd changepirce="900">128G</dd>
-                <dd changepirce="1300">256G</dd>
-              </dl>
-              <dl>
-                <dt class="title">选择版本</dt>
-                <dd changepirce="0" class="active">公开版</dd>
-                <dd changepirce="-1000">移动版</dd>
-              </dl>
-              <dl>
-                <dt class="title">购买方式</dt>
-                <dd changepirce="0" class="active">官方标配</dd>
-                <dd changepirce="-240">优惠移动版</dd>
-                <dd changepirce="-390">电信优惠版</dd>
+              <dl v-for="attr in spuSaleAttrList" :key="attr.id">
+                <dt class="title">{{attr.saleAttrName}}:</dt>
+                <dd
+                  changepirce="0"
+                  :class="{active:spuAttr.isChecked==='1'}"
+                  v-for=" (spuAttr) in attr.spuSaleAttrValueList"
+                  :key="spuAttr.id"
+                  @click="setValue(spuAttr,attr.spuSaleAttrValueList)"
+                >{{spuAttr.saleAttrValueName}}色</dd>
               </dl>
             </div>
             <div class="cartWrap">
@@ -341,19 +330,58 @@ import ImageList from "./ImageList/ImageList";
 import Zoom from "./Zoom/Zoom";
 // 引入商品详情api测试
 // import { reqDetailInfo } from "@/api";
+// 引入vuex的辅助函数
+import { mapGetters } from "vuex";
 
 export default {
   name: "Detail",
+  data() {
+    return {
+      currentImgeIndex: 0, // 当前图标的下标
+    };
+  },
 
   components: {
     ImageList,
     Zoom,
   },
 
+  //页面加载的声明周期函数
   async mounted() {
     // const result = await reqDetailInfo(120);
     // console.log(result);
-    this.$store.dispatch("getDetailInfo", 120);
+
+    // 通过路由信息对象，获取params参数中的数据
+    const { skuId } = this.$route.params;
+    // console.log(this.$route);
+    this.$store.dispatch("getDetailInfo", skuId); // 提交对应actions并且传入需要的参数
+  },
+
+  // 计算属性
+  computed: {
+    ...mapGetters([
+      "categoryView",
+      "skuInfo",
+      "spuSaleAttrList",
+      "skuImageList",
+    ]),
+  },
+
+  // 方法
+  methods: {
+    // 设置点击选择颜色切换高亮显示
+    setValue(spuAttr, spuSaleAttrValueList) {
+      // 获取当前数组中的所有选项
+      if (spuAttr.isChecked !== -1) {
+        spuSaleAttrValueList.forEach((val) => (val.isChecked = 0)); // 全部重置，不选中
+        spuAttr.isChecked = "1"; // 单独设置选中
+      }
+    },
+
+    // 修改图片选中的方法，把选中的下标存到父级组件
+    changCurrentIndex(index) {
+      this.currentImgeIndex = index;
+    },
   },
 };
 </script>
