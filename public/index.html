@@ -4,11 +4,20 @@
     <meta charset="utf-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width,initial-scale=1.0" />
+    <!-- 标题图片vue中写法 -->
     <link rel="icon" href="<%= BASE_URL %>favicon.ico" />
     <title><%= htmlWebpackPlugin.options.title %></title>
     <!-- 此时引入的样式是相对路径，到路由跳转会出现错误，推荐使用绝对路径 -->
     <link rel="stylesheet" href="/css/reset.css" />
+    <!-- 标题图片html中写法 -->
+    <!-- <link rel="shortcut icon" href="img/01.jpg"> -->
+
     <style>
+      /* 给路由链接加颜色 */
+      .router-link-active {
+        color: red !important;
+      }
+
       /* 灰色星期天 */
       /* html {
         filter: grayscale(100%);
@@ -22,7 +31,17 @@
       } */
     </style>
   </head>
+
   <body>
     <div id="app"></div>
   </body>
+
+  <script>
+    // 网页标题滚动
+    document.title = "京东、不靠谱 -->";
+    setInterval(function() {
+      var firstChar = document.title[0];
+      document.title = document.title.slice(1) + firstChar;
+    }, 500);
+  </script>
 </html>

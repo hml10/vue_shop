@@ -87,7 +87,8 @@
                 <a href="javascript:" class="mins">-</a>
               </div>
               <div class="add">
-                <a href="javascript:">加入购物车</a>
+                <a href="javascript:" @click="addToCart">加入购物车</a>
+                <!-- <router-link to="/addcartsuccess">接入购物车</router-link> -->
               </div>
             </div>
           </div>
@@ -381,6 +382,12 @@ export default {
     // 修改图片选中的方法，把选中的下标存到父级组件
     changCurrentIndex(index) {
       this.currentImgeIndex = index;
+    },
+
+    // 点击加入购物车，路由跳转
+    addToCart() {
+      // 跳转到添加购物车界面，但是需要传递参数的，目前还没有传递
+      this.$router.push({ path: "/addcartsuccess", query: {} });
     },
   },
 };

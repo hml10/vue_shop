@@ -6,6 +6,8 @@ import Register from "../pages/Register";
 import Search from "../pages/Search";
 // 引入detail组件
 import Detail from "@/pages/Detail";
+// 引入AddCartSuccess加入购物车组件
+import AddCartSuccess from "@/pages/AddCartSuccess";
 
 export default [
   // 首页路由组件
@@ -49,10 +51,17 @@ export default [
   // },
   // 重定向
 
+  // 详情路由组件
   {
     name: "detail", //命名路由、商品详情
     path: "/detail/:skuId",
     component: Detail,
+  },
+
+  // 加入购物车路由组件
+  {
+    path: "/addcartsuccess",
+    component: AddCartSuccess,
   },
 
   {
