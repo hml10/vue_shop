@@ -181,4 +181,4 @@
 
 ## 加入购物车 day_08-下午
 
-- AddCartSuccess 组件注册路由
+- AddCartSuccess 加入购物车组件、注册路由跳转，实现静态页面
