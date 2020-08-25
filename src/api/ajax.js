@@ -6,6 +6,7 @@ import axios from "axios";
 // 引入nprogress以及样式
 import Nprogress from "nprogress";
 import "nprogress/nprogress.css";
+import store from "@/store";
 
 // 配置一个通用的axios 基础路径和请求超时时间
 const ajax = axios.create({
@@ -19,6 +20,9 @@ ajax.interceptors.request.use(
   (config) => {
     //显示请求中的水平进度条(请求成功或者失败后需要隐藏进度条)
     Nprogress.start();
+
+    // 5、所有的请求头都需要携带userTempId
+    config.headers["userTempId"] = store.state.user.userTempId; // 用户零时id凭证--->vuex--->store.state.userTempId
 
     return config; // 必须返回配置对象 牛逼
   },

@@ -8,6 +8,8 @@ import Search from "../pages/Search";
 import Detail from "@/pages/Detail";
 // 引入AddCartSuccess加入购物车组件
 import AddCartSuccess from "@/pages/AddCartSuccess";
+// 引入购物车组件
+import ShopCart from "@/pages/ShopCart";
 
 export default [
   // 首页路由组件
@@ -62,6 +64,12 @@ export default [
   {
     path: "/addcartsuccess",
     component: AddCartSuccess,
+  },
+
+  // 引入购物车组件
+  {
+    path: "/shopcart",
+    component: ShopCart,
   },
 
   {

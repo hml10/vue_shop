@@ -8,16 +8,22 @@
         <div class="left-good">
           <div class="left-pic">
             <!-- <img :src="good.skuDefaultImg"> -->
-            <img src="./images/01.png" alt="购物车图片" />
+            <img :src="skuInfo.skuDefaultImg" alt="购物车图片" />
           </div>
           <div class="right-info">
-            <p class="title">垃圾苹果手机 我呸 梦幻蓝 全网通(4GB+64GB)</p>
-            <p class="attr">颜色：WFZ5099IH/5L钛金釜内胆 数量：2</p>
+            <p class="title">{{skuInfo.skuName}}</p>
+            <p class="attr">颜色：WFZ5099IH/5L钛金釜内胆 数量：{{$route.query.skuNum}}</p>
           </div>
         </div>
         <div class="right-gocart">
-          <a href="javascript:" class="sui-btn btn-xlarge">查看商品详情</a>
-          <a href="javascript:">去购物车结算 ></a>
+          <!-- <a href="javascript:" class="sui-btn btn-xlarge">查看商品详情</a> -->
+
+          <router-link
+            class="sui-btn btn-xlarge"
+            :to="{name:'detail',params:{skuId:$route.query.skuId}}"
+          >查看商品详情</router-link>
+          <!-- <a href="javascript:">去购物车结算 ></a> -->
+          <router-link to="/shopcart">去购物车结算 ></router-link>
         </div>
       </div>
     </div>
@@ -27,6 +33,18 @@
 <script>
 export default {
   name: "AddCartSuccess",
+  data() {
+    return {
+      skuInfo: {}, // 用来存储当前商品数据的对象
+    };
+  },
+
+  mounted() {
+    // 读取sessionStorage中的数据
+    this.skuInfo = JSON.parse(window.sessionStorage.getItem("SKU_INFO"));
+    // 立刻干掉缓存数据
+    window.sessionStorage.removeItem("SKU_INFO");
+  },
 };
 </script>
 

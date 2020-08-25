@@ -82,13 +82,13 @@
             </div>
             <div class="cartWrap">
               <div class="controls">
-                <input autocomplete="off" class="itxt" />
-                <a href="javascript:" class="plus">+</a>
-                <a href="javascript:" class="mins">-</a>
+                <input autocomplete="off" class="itxt" v-model="skuNum" />
+                <a href="javascript:" class="plus" @click="skuNum++">+</a>
+                <a href="javascript:" class="mins" @click="skuNum > 0 ? skuNum-- : ''">-</a>
               </div>
               <div class="add">
                 <a href="javascript:" @click="addToCart">加入购物车</a>
-                <!-- <router-link to="/addcartsuccess">接入购物车</router-link> -->
+                <!-- <router-link to="/addcartsuccess">加入购物车</router-link> -->
               </div>
             </div>
           </div>
@@ -339,6 +339,7 @@ export default {
   data() {
     return {
       currentImgeIndex: 0, // 当前图标的下标
+      skuNum: 1, // 商品的数量
     };
   },
 
@@ -385,10 +386,62 @@ export default {
     },
 
     // 点击加入购物车，路由跳转
-    addToCart() {
-      // 跳转到添加购物车界面，但是需要传递参数的，目前还没有传递
-      this.$router.push({ path: "/addcartsuccess", query: {} });
+    async addToCart() {
+      const query = { skuId: this.skuInfo.id, skuNum: this.skuNum };
+
+      // 发送异步actions，携带参数，并接收的action返回值
+      const errorMsg = await this.$store.dispatch("addToCart", query);
+
+      // 问题：如何根据提交的异步action成功或者失败来做不同的处理？
+      // 方式一：使用 callback 回调处理、方式二：使用 async 函数处理
+
+      // 当该回调没有错误信息
+      if (!errorMsg) {
+        // 请求成功---把购物车界面中需要的大量商品信息保存起来---sessionStorage或者localStorage
+        window.sessionStorage.setItem("SKU_INFO", JSON.stringify(this.skuInfo));
+
+        // 跳转到添加购物车界面，但是需要传递参数的，目前还没有传
+        this.$router.push({
+          path: "/addcartsuccess",
+          query,
+          // query: { skuId: this.skuInfo.id, skuNum: this.skuNum },
+        });
+      } else {
+        // 失败的，如果有错误信息就直接显示出来
+        alert(errorMsg);
+      }
     },
+
+    // 问题解决方式一、使用callback回调函数解决
+    // // 点击加入购物车，路由跳转
+    // addToCart() {
+    //   const query = { skuId: this.skuInfo.id, skuNum: this.skuNum };
+
+    //   // 发送异步actions，携带参数
+    //   this.$store.dispatch("addToCart", { ...query, callback: this.callback });
+    //   // 问题：如何根据提交的异步action成功或者失败来做不同的处理？
+    //   // 方式一：使用 callback 回调处理
+    //   // 方式二：使用 async 函数处理
+    // },
+
+    // // 创建callback
+    // callback(errorMsg) {
+    //   const query = { skuId: this.skuInfo.id, skuNum: this.skuNum };
+
+    //   // 当该回调没有错误信息
+    //   if (!errorMsg) {
+    //     // 请求成功
+    //     // 跳转到添加购物车界面，但是需要传递参数的，目前还没有传
+    //     this.$router.push({
+    //       path: "/addcartsuccess",
+    //       query,
+    //       // query: { skuId: this.skuInfo.id, skuNum: this.skuNum },
+    //     });
+    //   } else {
+    //     // 失败的，如果有错误信息就直接显示出来
+    //     alert(errorMsg);
+    //   }
+    // },
   },
 };
 </script>
