@@ -390,7 +390,7 @@ export default {
       const query = { skuId: this.skuInfo.id, skuNum: this.skuNum };
 
       // 发送异步actions，携带参数，并接收的action返回值
-      const errorMsg = await this.$store.dispatch("addToCart", query);
+      const errorMsg = await this.$store.dispatch("addToCart2", query);
 
       // 问题：如何根据提交的异步action成功或者失败来做不同的处理？
       // 方式一：使用 callback 回调处理、方式二：使用 async 函数处理
@@ -418,7 +418,7 @@ export default {
     //   const query = { skuId: this.skuInfo.id, skuNum: this.skuNum };
 
     //   // 发送异步actions，携带参数
-    //   this.$store.dispatch("addToCart", { ...query, callback: this.callback });
+    //   this.$store.dispatch("addToCart1", { ...query, callback: this.callback });
     //   // 问题：如何根据提交的异步action成功或者失败来做不同的处理？
     //   // 方式一：使用 callback 回调处理
     //   // 方式二：使用 async 函数处理

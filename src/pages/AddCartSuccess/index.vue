@@ -43,7 +43,7 @@ export default {
     // 读取sessionStorage中的数据
     this.skuInfo = JSON.parse(window.sessionStorage.getItem("SKU_INFO"));
     // 立刻干掉缓存数据
-    window.sessionStorage.removeItem("SKU_INFO");
+    // window.sessionStorage.removeItem("SKU_INFO");
   },
 };
 </script>
