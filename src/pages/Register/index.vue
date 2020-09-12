@@ -1,37 +1,65 @@
 <template>
-  <!-- 注册内容 -->
   <div class="register">
     <h3>
       注册新用户
       <span class="go">
         我有账号，去
-        <a href="/login">登陆</a>
+        <!-- <a href="login.html" target="_blank">登陆</a> -->
+        <router-link to="/login">登陆</router-link>
       </span>
     </h3>
     <div class="content">
       <label>手机号:</label>
-      <input type="text" placeholder="请输入你的手机号" />
+      <input
+        type="text"
+        placeholder="请输入你的手机号"
+        v-model="mobile"
+        name="mobile"
+        v-validate="'required|checkMobile'"
+      />
+      <span style="color:red">{{errors.first('mobile')}}</span>
     </div>
     <div class="content">
       <label>验证码:</label>
-      <input type="text" placeholder="请输入验证码" />
-      <img ref="code" src="http://182.92.128.115/api/user/passport/code" alt="code" />
-      <!-- <img ref="code" src="http://47.93.148.192/api/user/passport/code" alt="code" /> -->
+      <input
+        type="text"
+        placeholder="请输入验证码"
+        v-model="code"
+        name="code"
+        v-validate="'required|checkCode'"
+      />
+      <img ref="code" src="/api/user/passport/code" alt="code" @click="updateCode" />
+      <span style="color:red">{{errors.first('code')}}</span>
     </div>
+
     <div class="content">
       <label>登录密码:</label>
-      <input type="text" placeholder="请输入你的登录密码" />
+      <input
+        type="password"
+        placeholder="请输入你的登录密码"
+        v-model="password"
+        name="password"
+        v-validate="'required'"
+      />
+      <span style="color:red">{{errors.first('password')}}</span>
     </div>
     <div class="content">
       <label>确认密码:</label>
-      <input type="text" placeholder="请输入确认密码" />
+      <input
+        type="password"
+        placeholder="请输入确认密码"
+        v-model="password2"
+        name="password2"
+        v-validate="'required'"
+      />
+      <span style="color:red">{{errors.first('password2')}}</span>
     </div>
     <div class="controls">
-      <input name="m1" type="checkbox" />
+      <input name="m1" type="checkbox" v-model="isAgree" />
       <span>同意协议并注册《尚品汇用户协议》</span>
     </div>
     <div class="btn">
-      <a href="javascript:">完成注册</a>
+      <a href="javascript:" @click="register">完成注册</a>
     </div>
   </div>
 </template>
@@ -40,12 +68,52 @@
 export default {
   name: "Register",
   data() {
-    return {};
+    return {
+      // mobile: "15115971321", // 手机号码
+      mobile: "1511597130" + Math.floor(Math.random() * 10), // 有问题
+      password: "123456", // 密码
+      password2: "123456", //确认密码
+      code: "", // 图形验证码
+      isAgree: true, // 是否同意
+    };
   },
-  components: {},
+  methods: {
+    // 更新图形验证码
+    updateCode() {
+      // this.$refs.code.src = "/api/user/passport/code";
+      this.$refs.code.src = "/api/user/passport/code?time=" + Date.now();
+    },
+    // 注册的方法
+    async register() {
+      // 获取文本框中的数据
+      const { mobile, password, password2, code, isAgree } = this;
+      // 判断是否已经同意了
+      if (!isAgree) {
+        alert("必须得同意啊");
+        return;
+      }
+      // 判断两次密码是否一致
+      if (password !== password2) {
+        alert("两次密码不一致啊");
+        return;
+      } else {
+        const names = ["mobile", "password", "password2", "code"];
+        const success = await this.$validator.validateAll(names); // 表单整体校验-----返回的是布尔值(返回的是promise对象)
+        if (success) {
+          try {
+            // 发送请求了
+            await this.$store.dispatch("register", { mobile, password, code });
+            // 路由跳转
+            this.$router.replace("/login");
+          } catch (error) {
+            alert(error.message);
+          }
+        }
+      }
+    },
+  },
 };
 </script>
-
 <style lang="less" rel="stylesheet/less" scoped>
 .register {
   background: url(./images/bg.jpg) center center no-repeat;

@@ -7,10 +7,6 @@ import mockAjax from "./mockAjax";
 export const reqBaseCategoryList = () =>
   ajax.get("/product/getBaseCategoryList");
 
-// 登录的接口 post请求，有参数
-export const reqLogin = (mobile, password) =>
-  ajax.post("/user/passport/login", { mobile, password });
-
 // 引入mock数据测试
 export const reqBanners = () => mockAjax.get("/banners");
 export const reqFloors = () => mockAjax.get("/floors");
@@ -45,3 +41,15 @@ export const reqCheckCartItem = (skuId, isChecked) =>
 // 删除购物车商品接口
 export const reqDeleteCartItem = (skuId) =>
   ajax.delete(`/cart/deleteCart/${skuId}`);
+
+// 登录的接口 post请求，有参数
+export const reqLogin = (mobile, password) =>
+  ajax.post("/user/passport/login", { mobile, password });
+
+// 注册Register接口
+export const reqRegister = (userInfo) =>
+  ajax.post("/user/passport/register", userInfo);
+// export const reqRegister = (mobile, password, code) => ajax.post("/user/passport/register", { mobile, password, code });
+
+// 退出登陆 /user/passport/logout
+export const reqLogout = () => ajax.get("/user/passport/logout");

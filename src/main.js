@@ -15,6 +15,9 @@ import Carousel from "./components/Carousel";
 // 引入分页组件
 import Pagination from "./components/Pagination";
 
+// 引入vue表单验证插件
+import "./validate";
+
 // 引入mock
 import "./mock/mockServer";
 // 引入swiper样式

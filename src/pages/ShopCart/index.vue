@@ -33,9 +33,17 @@
             <span class="price">{{item.skuPrice}}</span>
           </li>
           <li class="cart-list-con5">
-            <a href="javascript:void(0)" class="mins">-</a>
-            <input autocomplete="off" type="text" minnum="1" class="itxt" v-model="item.skuNum" />
-            <a href="javascript:void(0)" class="plus">+</a>
+            <a href="javascript:void(0)" class="mins" @click="changeItemCount(item,-1)">-</a>
+            <!-- <input autocomplete="off" type="text" minnum="1" class="itxt" v-model="item.skuNum" /> -->
+            <input
+              autocomplete="off"
+              type="text"
+              minnum="1"
+              class="itxt"
+              :value="item.skuNum"
+              @change="changeItemCount(item,$event.target.value*1-item.skuNum)"
+            />
+            <a href="javascript:void(0)" class="plus" @click="changeItemCount(item,1)">+</a>
           </li>
           <li class="cart-list-con6">
             <span class="sum">{{item.skuPrice*item.skuNum}}</span>
@@ -50,7 +58,7 @@
     </div>
     <div class="cart-tool">
       <div class="select-all">
-        <input class="chooseAll" type="checkbox" v-model="isAllCheck" />
+        <input class="chooseAll" type="checkbox" :checked="isAllCheck" @click="checkAll" />
         <span>全选</span>
       </div>
       <div class="option">
@@ -161,7 +169,7 @@ export default {
       // 先获取当前的购物项选中状态
       const isChecked = item.isChecked === 1 ? 0 : 1;
       const { skuId } = item;
-      console.log(isChecked); // 后台没数据，没看到效果，暂时没有注释的
+      // console.log(isChecked); // 后台没数据，没看到效果，暂时没有注释的
 
       // 分发action修改勾选状态
       this.$store.dispatch("checkCartItem", { skuId, isChecked }).then(
@@ -174,6 +182,85 @@ export default {
           alert(error.message);
         }
       );
+    },
+
+    // 改变所有购物项的选中状态，全选全不选
+    async checkAll(event) {
+      // console.log(event.target.checked);
+      // 获取当前复选框的状态，该复选框为布尔类型，需要转为数字0或1
+      const isChecked = event.target.checked * 1;
+
+      // const promises = [];
+      // console.log(isChecked);
+      // 遍历当前所有的购物项，分发action，并且传入skuId和isCheched
+
+      // this.shopCartList.forEach((item) => {
+      //   // 遍历一次数据就分发一次action
+      //   const promise = this.$store.dispatch("checkCartItem", {
+      //     skuId: item.skuId,
+      //     isChecked,
+      //   });
+      //   promises.push(promise);
+      // });
+      // Promise.all(promises).then()
+
+      // const promises = this.shopCartList.reduce((pre, item) => {
+      //   const promise = this.$store.dispatch("checkCartItem", {
+      //     skuId: item.skuId,
+      //     isChecked,
+      //   });
+      //   pre.push(promise);
+      //   return pre;
+      // }, []);
+
+      const promises = this.shopCartList.map((item) => {
+        return this.$store.dispatch("checkCartItem", {
+          skuId: item.skuId,
+          isChecked,
+        });
+      });
+      try {
+        await Promise.all(promises);
+        this.getShopCartList(); // 重新发送请求
+      } catch (error) {
+        alert(error.message);
+      }
+    },
+
+    // 修改购物项数量方法 (@input改变输入框时触发，@change失去焦点时触发)
+    // async changeItemCount(item, event) {
+    //   // console.log(event);
+    //   // 准备参数，调用接口
+    //   const { skuId } = item;
+    //   // 判断修改后的数据一定是大于0 原来的数据加上改变后的一定要大于零
+    //   if (item.skuNum + event > 0) {
+    //     // 分发action
+    //     const errorMsg = await this.$store.dispatch("addToCart2", {
+    //       skuId,
+    //       skuNum: event,
+    //     });
+    //     if (!errorMsg) {
+    //       // 修改数量成功，重新获取购物车中的数据列表
+    //       this.getShopCartList();
+    //     } else {
+    //       alert(errorMsg);
+    //     }
+    //   }
+    // },
+
+    // 优化修改购物车数量方法
+    changeItemCount(item, event) {
+      // console.log(event);
+      // 准备参数，调用接口
+      const { skuId } = item;
+      // 判断修改后的数据一定是大于0 原来的数据加上改变后的一定要大于零
+      if (item.skuNum + event > 0) {
+        // 分发action
+        this.$store.dispatch("addToCart3", {
+          skuId,
+          skuNum: event,
+        });
+      }
     },
   },
 };

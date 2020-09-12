@@ -41,6 +41,19 @@ const actions = {
     return result.code === 200 ? "" : result.message || "添加购物车失败";
   },
 
+  // 方式二、(加优化) 使用async配合await
+  // 添加购物车操作---这里面的commit属于占位，添加购物车发送请求，可能成功、也有可能失败
+  async addToCart3({ commit, dispatch }, { skuId, skuNum }) {
+    const result = await reqAddToCart(skuId, skuNum);
+    // return result.code === 200 ? "" : result.message || "添加购物车失败";
+    if (result.code === 200) {
+      dispatch("getShopCartList");
+    } else {
+      alert(result.message || "添加购物车失败");
+      // return result.message || "添加购物车失败"
+    }
+  },
+
   // 获取购物车数据列表接口
   async getShopCartList({ commit }) {
     const result = await reqCartList();
@@ -61,7 +74,7 @@ const actions = {
     // return result.code === 200 ? "" : result.message || "删除商品失败";
   },
 
-  // 修改商品状态
+  // 修改商品状态，全选全不选
   async checkCartItem({ commit }, { skuId, isChecked }) {
     const result = await reqCheckCartItem(skuId, isChecked);
     // 处理失败的情况
