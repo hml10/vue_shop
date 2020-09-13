@@ -14,14 +14,32 @@
 
         <div class="content">
           <form action="##">
+            <!-- 手机号校正 -->
             <div class="input-text clearFix">
               <span></span>
-              <input type="text" placeholder="邮箱/用户名/手机号" />
+              <input
+                type="text"
+                placeholder="邮箱/用户名/手机号"
+                v-model="mobile"
+                name="mobile"
+                v-validate="'required|checkMobile'"
+              />
+              <p style="color:red">{{errors.first('mobile')}}</p>
             </div>
+
+            <!-- 密码校正 -->
             <div class="input-text clearFix">
               <span class="pwd"></span>
-              <input type="text" placeholder="请输入密码" />
+              <input
+                type="password"
+                placeholder="请输入密码"
+                v-model="password"
+                name="password"
+                v-validate="'required'"
+              />
+              <p style="color:red">{{errors.first('password')}}</p>
             </div>
+
             <div class="setting clearFix">
               <label class="checkbox inline">
                 <input name="m1" type="checkbox" value="2" checked />
@@ -29,8 +47,9 @@
               </label>
               <span class="forget">忘记密码？</span>
             </div>
-            <button class="btn">登&nbsp;&nbsp;录</button>
+            <button class="btn" @click.prevent="login">登&nbsp;&nbsp;录</button>
           </form>
+
           <div class="call clearFix">
             <ul>
               <li>
@@ -59,9 +78,34 @@
 export default {
   name: "Login",
   data() {
-    return {};
+    return {
+      mobile: "15115971314", // 手机号
+      password: "123456", // 密码
+    };
   },
-  components: {},
+  methods: {
+    login() {
+      // console.log("账号：", this.mobile, "密码：", this.password);
+      const { mobile, password } = this;
+
+      // 判断 如果不为空
+      if (mobile !== "" && password !== "") {
+        // 分发 actio
+        this.$store
+          .dispatch("login", { mobile, password })
+          .then(() => {
+            // 成功，跳转到主页
+            this.$router.replace("/");
+          })
+          .catch((error) => {
+            // 失败
+            alert(error);
+          });
+      } else {
+        alert("账号和密码不能为空");
+      }
+    },
+  },
 };
 </script>
 

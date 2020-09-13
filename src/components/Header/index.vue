@@ -6,7 +6,13 @@
       <div class="container">
         <div class="loginList">
           <p>尚品汇欢迎您！</p>
-          <p>
+          <p v-if="userInfo.name">
+            <span>{{userInfo.name}}</span>
+            &#32;&nbsp;
+            <span style="font-size:16px;margin-right: 3px;color:red">|</span>
+            <a href="javascript:" @click="logout">退出登录</a>
+          </p>
+          <p v-else>
             <span>请</span>
             <router-link to="/login">登录</router-link>
             <router-link to="/register" class="register">免费注册</router-link>
@@ -16,14 +22,17 @@
           </p>
         </div>
         <div class="typeList">
-          <a href="/shopcart">我的订单</a>
-          <a href="###">我的购物车</a>
-          <a href="###">我的尚品汇</a>
-          <a href="###">尚品汇会员</a>
-          <a href="###">企业采购</a>
-          <a href="###">关注尚品汇</a>
-          <a href="###">合作招商</a>
-          <a href="###">商家后台</a>
+          <!-- <a href="/shopcart">我的订单</a> -->
+          <!-- <a href="###">我的购物车</a> -->
+
+          <router-link to="/center">我的订单</router-link>
+          <router-link to="/shopcart">我的购物车</router-link>
+          <a href="javascript:">我的尚品汇</a>
+          <a href="javascript:">尚品汇会员</a>
+          <a href="javascript:">企业采购</a>
+          <a href="javascript:">关注尚品汇</a>
+          <a href="javascript:">合作招商</a>
+          <a href="javascript:">商家后台</a>
         </div>
       </div>
     </div>
@@ -52,12 +61,20 @@
 </template>
 
 <script>
+// 引入vuex辅助函数
+import { mapState, mapstate } from "vuex";
+
 export default {
   name: "Header",
   data() {
     return {
       keyword: "", //搜索关键字
     };
+  },
+  computed: {
+    ...mapState({
+      userInfo: (state) => state.user.userInfo,
+    }),
   },
   // 方法
   methods: {
@@ -122,6 +139,18 @@ export default {
       // this.$router.push(`/search?keyword=${this.keyword}`); // query 字符串方式
       // 或者 对象方式的query传递
       // this.$router.push({ path: "/search", query: { keyword: this.keyword } });
+    },
+    // 退出登录
+    async logout() {
+      if (window.confirm("确定要退出吗？")) {
+        try {
+          // 分发退出 action
+          await this.$store.dispatch("logout");
+          this.$router.replace("/login");
+        } catch (error) {
+          alert(error.message);
+        }
+      }
     },
   },
   // 页面加载后回调，多余操作，练习事件总线---通过点击search组件中 x 来清除搜索中的关键字

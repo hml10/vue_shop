@@ -76,7 +76,8 @@
           <i class="summoney">{{totalPrice}}</i>
         </div>
         <div class="sumbtn">
-          <a class="sum-btn" href="###" target="_blank">结算</a>
+          <a class="sum-btn" href="javascript:" @click="Trade">结算</a>
+          <!-- <router-link to="/Trade" class="sum-btn">结算</router-link> -->
         </div>
       </div>
     </div>
@@ -227,7 +228,7 @@ export default {
       }
     },
 
-    // 修改购物项数量方法 (@input改变输入框时触发，@change失去焦点时触发)
+    //// 修改购物项数量方法 (@input改变输入框时触发，@change失去焦点时触发)
     // async changeItemCount(item, event) {
     //   // console.log(event);
     //   // 准备参数，调用接口
@@ -261,6 +262,11 @@ export default {
           skuNum: event,
         });
       }
+    },
+
+    // 去结算
+    Trade() {
+      this.$router.push("Trade");
     },
   },
 };

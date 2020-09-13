@@ -8,6 +8,8 @@
         <router-link to="/login">登陆</router-link>
       </span>
     </h3>
+
+    <!-- 手机号校正 -->
     <div class="content">
       <label>手机号:</label>
       <input
@@ -19,6 +21,8 @@
       />
       <span style="color:red">{{errors.first('mobile')}}</span>
     </div>
+
+    <!-- 图形码校正 -->
     <div class="content">
       <label>验证码:</label>
       <input
@@ -32,6 +36,7 @@
       <span style="color:red">{{errors.first('code')}}</span>
     </div>
 
+    <!-- 密码校正 -->
     <div class="content">
       <label>登录密码:</label>
       <input
@@ -54,6 +59,7 @@
       />
       <span style="color:red">{{errors.first('password2')}}</span>
     </div>
+
     <div class="controls">
       <input name="m1" type="checkbox" v-model="isAgree" />
       <span>同意协议并注册《尚品汇用户协议》</span>
@@ -69,8 +75,8 @@ export default {
   name: "Register",
   data() {
     return {
-      // mobile: "15115971321", // 手机号码
-      mobile: "1511597130" + Math.floor(Math.random() * 10), // 有问题
+      // mobile: "1511597134" + Math.floor(Math.random() * 10), // 有问题
+      mobile: "15115971314", // 手机号码
       password: "123456", // 密码
       password2: "123456", //确认密码
       code: "", // 图形验证码
